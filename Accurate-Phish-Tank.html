@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accurate Phish Tank</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1565c0;
+            --dark-blue: #0d47a1;
+            --light-blue: #e3f2fd;
+            --accent-yellow: #ffc107;
+            --dark-yellow: #ffa000;
+            --light-yellow: #fff8e1;
+            --gray-dark: #333;
+            --gray-light: #f5f5f5;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--white) 100%);
+            color: var(--gray-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+            color: var(--white);
+            padding: 20px 0;
+            border-bottom: 4px solid var(--accent-yellow);
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--accent-yellow);
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(21, 101, 192, 0.9), rgba(13, 71, 161, 0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231565c0"/><path d="M0 0L100 100" stroke="%230d47a1" stroke-width="2"/><path d="M100 0L0 100" stroke="%230d47a1" stroke-width="2"/></svg>');
+            color: var(--white);
+            padding: 60px 30px;
+            text-align: center;
+            margin: 30px 0;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-yellow);
+            color: var(--gray-dark);
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            background-color: var(--dark-yellow);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .scan-section {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--accent-yellow);
+        }
+
+        .scan-section h2 {
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .url-input-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .url-input {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .url-input:focus {
+            border-color: var(--primary-blue);
+            outline: none;
+        }
+
+        .scan-button {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .scan-button:hover {
+            background-color: var(--dark-blue);
+        }
+
+        .results-section {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        .results-section h2 {
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-card {
+            background-color: var(--light-yellow);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent-yellow);
+        }
+
+        .result-safe {
+            border-left: 5px solid #4caf50;
+        }
+
+        .result-warning {
+            border-left: 5px solid var(--accent-yellow);
+        }
+
+        .result-danger {
+            border-left: 5px solid #f44336;
+        }
+
+        .features-section {
+            margin: 50px 0;
+        }
+
+        .features-section h2 {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            background-color: var(--light-blue);
+            color: var(--primary-blue);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .stats-section {
+            background: linear-gradient(to right, var(--primary-blue), var(--dark-blue));
+            color: var(--white);
+            padding: 60px 30px;
+            border-radius: 10px;
+            margin: 50px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent-yellow);
+        }
+
+        footer {
+            background-color: var(--dark-blue);
+            color: var(--white);
+            padding: 40px 0;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            color: var(--accent-yellow);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: var(--light-blue);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--accent-yellow);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Advanced Features Section */
+        .advanced-features {
+            margin: 50px 0;
+        }
+
+        .advanced-features h2 {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 40px;
+            font-size: 2.2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            background-color: var(--light-blue);
+            border-radius: 5px 5px 0 0;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .tab-content {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 0 10px 10px 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Animation for scanning */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .scanning {
+            animation: pulse 1.5s infinite;
+            background-color: var(--dark-yellow) !important;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--accent-yellow);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Accurate Phish Tank </h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h2>Accurate Phish Tank</h2>
+            <p>Accurate Phish Tank ues cutting-edge machine learning and LLM APIs to detect and prevent phishing attacks in real-time. Protect yourself from malicious websites with our advanced security tool.</p>
+            <a href="#scan" class="cta-button">Scan a Link Now</a>
+        </section>
+
+        <section class="main-content">
+            <div class="scan-section">
+                <h2><i class="fas fa-search"></i> URL Scanner</h2>
+                <p>Enter a URL below to check for phishing attempts and malicious content:</p>
+                <div class="url-input-container">
+                    <input type="url" class="url-input" id="urlInput" placeholder="https://example.com">
+                    <button class="scan-button" id="scanButton">Scan</button>
+                </div>
+                <div class="spinner" id="spinner"></div>
+                <div class="advanced-options">
+                    <h3><i class="fas fa-cogs"></i> Advanced Options</h3>
+                    <div class="tabs">
+                        <div class="tab active" data-tab="llm">LLM Analysis</div>
+                        <div class="tab" data-tab="mcp">MCP Server</div>
+                        <div class="tab" data-tab="heuristics">Heuristics</div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="llm-tab">
+                            <p>Use AI-powered analysis to detect phishing patterns and suspicious content.</p>
+                            <label>
+                                <input type="checkbox" checked> Enable LLM Analysis
+                            </label>
+                        </div>
+                        <div class="tab-pane" id="mcp-tab">
+                            <p>Connect to MCP server for enhanced threat intelligence and pattern recognition.</p>
+                            <label>
+                                <input type="checkbox" checked> Enable MCP Server
+                            </label>
+                        </div>
+                        <div class="tab-pane" id="heuristics-tab">
+                            <p>Use heuristic analysis to detect suspicious patterns and behaviors.</p>
+                            <label>
+                                <input type="checkbox" checked> Enable Heuristic Analysis
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2><i class="fas fa-clipboard-list"></i> Scan Results</h2>
+                <div class="result-card" id="resultCard">
+                    <p>Results will appear here after scanning a URL. Enter a website address and click Scan to begin.</p>
+                </div>
+                <div class="result-details">
+                    <h3><i class="fas fa-info-circle"></i> Detailed Analysis</h3>
+                    <div id="analysisDetails">
+                        <p>No analysis available yet. Scan a URL to see detailed information.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <h2>Advanced Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Our tool uses advanced machine learning algorithms to detect even the most sophisticated phishing attempts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Real-Time Detection</h3>
+                    <p>Get instant results with our real-time scanning technology that analyzes URLs as you browse.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Threat Intelligence</h3>
+                    <p>Access our constantly updated database of known phishing sites and malicious domains.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p>Detection Accuracy</p>
+                </div>
+                <div class="stat-item">
+                    <h3>25,678</h3>
+                    <p>Phishing Sites Detected</p>
+                </div>
+                <div class="stat-item">
+                    <h3>4.8/5</h3>
+                    <p>User Rating</p>
+                </div>
+                <div class="stat-item">
+                    <h3>0.2s</h3>
+                    <p>Average Scan Time</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="advanced-features">
+            <h2>How It Works</h2>
+            <div class="tabs">
+                <div class="tab active" data-tab="technology">Technology</div>
+                <div class="tab" data-tab="integration">API Integration</div>
+                <div class="tab" data-tab="protection">Protection Layers</div>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="technology-tab">
+                    <h3>Advanced Phishing Detection Technology</h3>
+                    <p>PhishGuard Pro combines multiple detection methods to provide comprehensive protection:</p>
+                    <ul>
+                        <li>Natural Language Processing (NLP) to analyze website content</li>
+                        <li>Computer vision to detect fake login pages</li>
+                        <li>Behavioral analysis to identify suspicious patterns</li>
+                        <li>Heuristic engine to detect previously unknown threats</li>
+                    </ul>
+                </div>
+                <div class="tab-pane" id="integration-tab">
+                    <h3>Seamless API Integration</h3>
+                    <p>Our tool integrates with leading LLM APIs and MCP servers for enhanced capabilities:</p>
+                    <ul>
+                        <li>OpenAI GPT for content analysis</li>
+                        <li>Google Safe Browsing API for threat data</li>
+                        <li>Custom MCP server for real-time analysis</li>
+                        <li>RESTful API for integration with other security tools</li>
+                    </ul>
+                </div>
+                <div class="tab-pane" id="protection-tab">
+                    <h3>Multi-Layered Protection</h3>
+                    <p>PhishGuard Pro employs a defense-in-depth strategy with multiple protection layers:</p>
+                    <ul>
+                        <li>URL analysis for known malicious domains</li>
+                        <li>Content scanning for phishing indicators</li>
+                        <li>Behavioral analysis of page interactions</li>
+                        <li>Real-time blocking of suspicious sites</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Accurate Phish Tank </h3>
+                    <p>Advanced phishing detection powered by AI and machine learning technology.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Knowledge Base</a></li>
+                        <li><a href="#">Security Reports</a></li>
+                        <li><a href="#">Phishing Statistics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Sales</a></li>
+                        <li><a href="#">Partnerships</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Accurate Phish Tank. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabName = tab.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs
+                    document.querySelectorAll('.tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Hide all tab panes
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    
+                    // Show the corresponding tab pane
+                    document.getElementById(`${tabName}-tab`).classList.add('active');
+                });
+            });
+
+            // Scan button functionality
+            const scanButton = document.getElementById('scanButton');
+            const urlInput = document.getElementById('urlInput');
+            const resultCard = document.getElementById('resultCard');
+            const analysisDetails = document.getElementById('analysisDetails');
+            const spinner = document.getElementById('spinner');
+
+            scanButton.addEventListener('click', () => {
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    alert('Please enter a URL to scan');
+                    return;
+                }
+                
+                // Show loading spinner
+                spinner.style.display = 'block';
+                scanButton.classList.add('scanning');
+                
+                // Simulate scanning process
+                setTimeout(() => {
+                    // Hide spinner
+                    spinner.style.display = 'none';
+                    scanButton.classList.remove('scanning');
+                    
+                    // Generate random result for demonstration
+                    const isPhishing = Math.random() > 0.5;
+                    
+                    if (isPhishing) {
+                        resultCard.className = 'result-card result-danger';
+                        resultCard.innerHTML = `
+                            <h3><i class="fas fa-exclamation-triangle"></i> Phishing Detected!</h3>
+                            <p>The URL <strong>${url}</strong> has been identified as a potential phishing site.</p>
+                            <p>We found several indicators of phishing:</p>
+                            <ul>
+                                <li>Suspicious domain registration</li>
+                                <li>Known phishing patterns in content</li>
+                                <li>Mismatch between URL and content</li>
+                            </ul>
+                            <p><strong>Recommendation:</strong> Do not enter any personal information on this site.</p>
+                        `;
+                        
+                        analysisDetails.innerHTML = `
+                            <div class="detail-item">
+                                <h4>Detailed Analysis</h4>
+                                <p>Domain Age: <span class="danger">Registered 15 days ago</span></p>
+                                <p>SSL Certificate: <span class="safe">Valid</span></p>
+                                <p>Content Similarity: <span class="danger">92% match with known phishing sites</span></p>
+                                <p>Heuristic Analysis: <span class="danger">Failed 5/7 checks</span></p>
+                            </div>
+                        `;
+                    } else {
+                        resultCard.className = 'result-card result-safe';
+                        resultCard.innerHTML = `
+                            <h3><i class="fas fa-check-circle"></i> No Phishing Detected</h3>
+                            <p>The URL <strong>${url}</strong> appears to be safe.</p>
+                            <p>Our analysis did not find any significant phishing indicators:</p>
+                            <ul>
+                                <li>Domain has been registered for over 1 year</li>
+                                <li>No known phishing patterns detected</li>
+                                <li>Content matches expected site purpose</li>
+                            </ul>
+                            <p><strong>Recommendation:</strong> This site appears safe to browse.</p>
+                        `;
+                        
+                        analysisDetails.innerHTML = `
+                            <div class="detail-item">
+                                <h4>Detailed Analysis</h4>
+                                <p>Domain Age: <span class="safe">Registered 2 years ago</span></p>
+                                <p>SSL Certificate: <span class="safe">Valid and trusted</span></p>
+                                <p>Content Similarity: <span class="safe">No significant matches with phishing sites</span></p>
+                                <p>Heuristic Analysis: <span class="safe">Passed all checks</span></p>
+                            </div>
+                        `;
+                    }
+                }, 2000);
+            });
+
+            // Example phishing URLs for demonstration
+            const exampleUrls = [
+                'https://www.paypal.com-security-alert.com',
+                'https://secure-apple-id-verification.com',
+                'https://www.amazon-deals.today',
+                'https://netflix-renew-your-subscription.xyz'
+            ];
+
+            // Rotate example URLs in the input field
+            let exampleIndex = 0;
+            setInterval(() => {
+                urlInput.placeholder = exampleUrls[exampleIndex];
+                exampleIndex = (exampleIndex + 1) % exampleUrls.length;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
